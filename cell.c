@@ -115,4 +115,5 @@ int main()
     printlist(c);
     printlistreverse(c);
     deallocate(&c);
+    return 0;
 }
