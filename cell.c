@@ -99,7 +99,7 @@ int sumit(struct cell *t)
     }
     return sum;
 }
-void main()
+int main()
 {
     c=NULL;
     struct cell *t;
