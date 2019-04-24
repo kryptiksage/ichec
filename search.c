@@ -6,8 +6,18 @@ int* randomarray(int n, int max)
 {
     int *a = (int *)malloc(sizeof(int));
     srand(time(NULL));
-    for(int i=0; i<n; i++)
-        a[i] = rand()%max;
+    for(int i=0; i<n; )
+    {
+        int num = rand()%max, f=0;
+        for(int j=0; j<i; j++)
+            if(a[j] == num)
+                f = 1;
+        if(f == 0)
+        {
+            a[i] = num;
+            i++;
+        }
+    }
     return a;
 }
 //search()
@@ -78,7 +88,7 @@ void mediansort(int n, int *cycle, int *arr, int *sorted)
         arr[i] = arr[i+1];
     if(*cycle == 0)
         sorted[*cycle] = m;
-    else if(m > sorted[*cycle-1])
+    else if(m >= sorted[*cycle-1])
         sorted[*cycle] = m;
     else if(m < sorted[*cycle-1])
     {
@@ -90,35 +100,64 @@ void mediansort(int n, int *cycle, int *arr, int *sorted)
     mediansort(n-1, cycle, arr, sorted);
 
 }
-//benchmark()
-int benchmark(int n, int max, int s, int mult)
+//benchmark_naive()
+int benchmark_naive(int n, int max, int s, int mult)
 {
     clock_t t;
     t = clock();
     for(int i=1; i<=mult; i++)
     {
-        if(i%2==0)
+        if(i%1000==0)
         {
-            int *arr = randomarray(n, max);
-            
+            int *arr = randomarray(n, max), *sorted = (int*)malloc(sizeof(int)), c=0;
+            mediansort(n, &c, arr, sorted);  
+            int item = search(s, n, sorted);       
         }
     }    
+    t = clock() - t;
+    double ti = (double)t;
+    return ti;
+}
+//benchmark_chop()
+int benchmark_chop(int n, int max, int s, int mult)
+{
+    clock_t t;
+    t = clock();
+    for(int i=1; i<=mult; i++)
+    {
+        if(i%1000==0)
+        {
+            int *arr = randomarray(n, max), *sorted = (int*)malloc(sizeof(int)), c=0;
+            mediansort(n, &c, arr, sorted);  
+            int item = chopsearch(s, n, sorted, 0, n-1);
+        }
+    }    
+    t = clock() - t;
+    double ti = (double)t;
+    return ti;
 }
 int main()
 {
-    int *p = randomarray(5, 5);
-    int sorted[50], c=0;
-    /*for(int i=0; i<5; i++)
-        printf("%i\n", p[i]);*/
-    int a[6] = {2, 8, 3, 7, 5, 10};
-    /*for(int i = 1; i <= 7; i++)
-    { 
-        printf("Index: %i\n", chopsearch(i, 7, a, 0, 6));
-    }*/
-    printf("Median: %i\n", median(6, a));
-    mediansort(6, &c, a, sorted);
-    printf("Median sort:\n");
-    for(int i=0; i<6; i++)
-        printf("No: %i\n", sorted[i]);
+    int n, max, c=0;
+    printf("Enter size of array: ");
+    scanf("%i", &n);
+    printf("Enter maximum value: ");
+    scanf("%i", &max);
+    int *arr = randomarray(n, max), *sorted = (int*)malloc(sizeof(int));
+    printf("\nUnsorted array: \n");
+    for(int i=0; i<n; i++)
+        printf("%i,\n", arr[i]);
+    mediansort(n, &c, arr, sorted);
+    printf("Sorted array: \n");
+    for(int i=0; i<n; i++)
+        printf("%i,\n", sorted[i]);    
+
+    //question 6 - i
+    printf("1.a: %d\n",benchmark_naive(2000, 10000, 10, 1000000));
+    printf("1.b: %d\n",benchmark_chop(2000, 10000, 10, 1000000));
+    printf("2.a: %d\n",benchmark_naive(2000, 10000, 5000, 1000000));
+    printf("2.b: %d\n",benchmark_chop(2000, 10000, 5000, 1000000));
+    printf("3.a: %d\n",benchmark_naive(2000, 10000, 9000, 1000000));
+    printf("3.b: %d\n",benchmark_chop(2000, 10000, 9000, 1000000));
     return 0;
 }
