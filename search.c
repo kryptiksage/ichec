@@ -61,16 +61,64 @@ int median(int n, int *arr)
 
     }
 }
+//mediansort()
+void mediansort(int n, int *cycle, int *arr, int *sorted)
+{
+    if(n<1)
+        return;
+    int m = median(n, arr);
+    int pos;
+    for(int i=0; i<n; i++)
+        if(arr[i] == m)
+        {
+            pos = i;
+            break;
+        }
+    for(int i=pos; i<n-1; i++)
+        arr[i] = arr[i+1];
+    if(*cycle == 0)
+        sorted[*cycle] = m;
+    else if(m > sorted[*cycle-1])
+        sorted[*cycle] = m;
+    else if(m < sorted[*cycle-1])
+    {
+        for(int i = *cycle ; i > 0; i--)
+            sorted[i] = sorted[i-1];
+        sorted[0] = m;
+    }  
+    *cycle = *cycle + 1;
+    mediansort(n-1, cycle, arr, sorted);
+
+}
+//benchmark()
+int benchmark(int n, int max, int s, int mult)
+{
+    clock_t t;
+    t = clock();
+    for(int i=1; i<=mult; i++)
+    {
+        if(i%2==0)
+        {
+            int *arr = randomarray(n, max);
+            
+        }
+    }    
+}
 int main()
 {
     int *p = randomarray(5, 5);
+    int sorted[50], c=0;
     /*for(int i=0; i<5; i++)
         printf("%i\n", p[i]);*/
-    int a[8] = {2, 8, 3, 7, 5, 6, 4, 1};
+    int a[6] = {2, 8, 3, 7, 5, 10};
     /*for(int i = 1; i <= 7; i++)
     { 
         printf("Index: %i\n", chopsearch(i, 7, a, 0, 6));
     }*/
-    printf("Median: %i\n", median(8, a));
+    printf("Median: %i\n", median(6, a));
+    mediansort(6, &c, a, sorted);
+    printf("Median sort:\n");
+    for(int i=0; i<6; i++)
+        printf("No: %i\n", sorted[i]);
     return 0;
 }
