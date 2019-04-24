@@ -5,16 +5,16 @@
 int* randomarray(int n, int max)
 {
     int *a = (int *)malloc(sizeof(int));
-    srand(time(NULL));
+    srand(time(NULL));//set random seed value according to time
     for(int i=0; i<n; )
     {
-        int num = rand()%max, f=0;
+        int num = rand()%max, f=0; //num = random value 
         for(int j=0; j<i; j++)
             if(a[j] == num)
-                f = 1;
+                f = 1; //checks if random value exists inside a[]
         if(f == 0)
         {
-            a[i] = num;
+            a[i] = num; //if not in a[] then a[i] = num
             i++;
         }
     }
@@ -29,7 +29,7 @@ int search(int i, int n, int *arr)
         if(arr[j] == i)
             return j;
         else if(arr[j] > i)
-            return p;
+            return p; //if arr[j] > i then no need to check further for i in arr[]
     }
     return p;
 }
@@ -37,10 +37,10 @@ int search(int i, int n, int *arr)
 int chopsearch(int i, int n, int *arr, int amin, int amax)
 {
     srand(time(NULL));
-    int x = amin + rand()%(amax-amin+1);
+    int x = amin + rand()%(amax-amin+1); //x = random chop value used to divide arr[]
     if((amax-amin) < 0)
         return -1;
-    else
+    else //similar to binary search 
     {
         if(i<arr[x])
             return chopsearch(i, n, arr, amin, x-1);
@@ -51,7 +51,7 @@ int chopsearch(int i, int n, int *arr, int amin, int amax)
             for(int j=amin; j<=x; j++)
             {
                 if(arr[j] == i)
-                    return j;
+                    return j; //check if i is present before a[x] and returns index of i i.e. j
             }
         }
     }
@@ -65,9 +65,9 @@ int median(int n, int *arr)
         int  c = 0;
         for(int j=0; j<n; j++)
             if(arr[j]<arr[i])
-                c++;
+                c++; 
         if(c == n/2)
-            return arr[i];
+            return arr[i]; //returns a[i] if a[i] has n/2 values less than it in the array
 
     }
 }
