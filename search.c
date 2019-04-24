@@ -4,7 +4,7 @@
 //return array with random values within limit
 int* randomarray(int n, int max)
 {
-    int *a = (int *)malloc(sizeof(int));
+    int *a = (int *)malloc(128*sizeof(int));
     srand(time(NULL));//set random seed value according to time
     for(int i=0; i<n; )
     {
@@ -88,7 +88,7 @@ void mediansort(int n, int *cycle, int *arr, int *sorted)
         arr[i] = arr[i+1]; //shifts values of arr[] 1 step backward
     if(*cycle == 0)
         sorted[*cycle] = m; //stores the first value of sorted
-    else if(m >= sorted[*cycle-1])
+    else if(m > sorted[*cycle-1])
         sorted[*cycle] = m; //stores value of median value greater than sorted[*cycle] to end of sorted[]
     else if(m < sorted[*cycle-1])
     {
@@ -151,6 +151,7 @@ int main()
     printf("Sorted array: \n");
     for(int i=0; i<n; i++)
         printf("%i,\n", sorted[i]);    
+    printf("End\n");
 
     //question 6 - i
     printf("1.a: %d\n",benchmark_naive(2000, 10000, 10, 1000000));
