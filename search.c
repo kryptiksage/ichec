@@ -76,26 +76,26 @@ void mediansort(int n, int *cycle, int *arr, int *sorted)
 {
     if(n<1)
         return;
-    int m = median(n, arr);
+    int m = median(n, arr); //median value of arr[]
     int pos;
     for(int i=0; i<n; i++)
         if(arr[i] == m)
         {
-            pos = i;
+            pos = i; //finds position of median in arr[]
             break;
         }
     for(int i=pos; i<n-1; i++)
-        arr[i] = arr[i+1];
+        arr[i] = arr[i+1]; //shifts values of arr[] 1 step backward
     if(*cycle == 0)
-        sorted[*cycle] = m;
+        sorted[*cycle] = m; //stores the first value of sorted
     else if(m >= sorted[*cycle-1])
-        sorted[*cycle] = m;
+        sorted[*cycle] = m; //stores value of median value greater than sorted[*cycle] to end of sorted[]
     else if(m < sorted[*cycle-1])
     {
         for(int i = *cycle ; i > 0; i--)
             sorted[i] = sorted[i-1];
         sorted[0] = m;
-    }  
+    }  // inserts median value less than sorted[*cycle] to beginning of sorted[]
     *cycle = *cycle + 1;
     mediansort(n-1, cycle, arr, sorted);
 

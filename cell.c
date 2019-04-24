@@ -58,9 +58,10 @@ int pop(struct cell *t)
         s = tmp;
         tmp = tmp->next;
     }
+    int n = tmp -> content;
     s->next=NULL;
     free(tmp);
-    return s->content;
+    return n;
 }
 //print list in order
 void printlist(struct cell *t)
@@ -109,7 +110,7 @@ int main()
     t = push(&c, 6);
     t = push(&c, 12);
     t = push(&c, 4);
-    pop(c);
+    printf("Pop: %i\n", pop(c));
     printf("Sum: %i\n", sumit(c));
     printf("Length: %i\n", countcells(c));
     printlist(c);
