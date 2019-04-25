@@ -4,7 +4,7 @@
 //return array with random values within limit
 int* randomarray(int n, int max)
 {
-    int *a = (int *)malloc(128*sizeof(int));
+    int *a = (int *)malloc(n*sizeof(int));
     srand(time(NULL));//set random seed value according to time
     for(int i=0; i<n; )
     {
@@ -37,11 +37,11 @@ int search(int i, int n, int *arr)
 int chopsearch(int i, int n, int *arr, int amin, int amax)
 {
     srand(time(NULL));
-    int x = amin + rand()%(amax-amin+1); //x = random chop value used to divide arr[]
     if((amax-amin) < 0)
         return -1;
     else //similar to binary search 
     {
+        int x = amin + rand()%(amax-amin+1); //x = random chop value used to divide arr[]
         if(i<arr[x])
             return chopsearch(i, n, arr, amin, x-1);
         else if(i>arr[x])
@@ -105,11 +105,14 @@ int benchmark_naive(int n, int max, int s, int mult)
 {
     clock_t t;
     t = clock();
+    int *arr;
+    int *sorted = (int*)malloc(n*sizeof(int));
     for(int i=1; i<=mult; i++)
     {
         if(i%1000==0)
         {
-            int *arr = randomarray(n, max), *sorted = (int*)malloc(sizeof(int)), c=0;
+            arr = randomarray(n, max);
+            int c=0;
             mediansort(n, &c, arr, sorted);  
             int item = search(s, n, sorted);       
         }
@@ -123,11 +126,14 @@ int benchmark_chop(int n, int max, int s, int mult)
 {
     clock_t t;
     t = clock();
+    int *arr;
+    int *sorted = (int*)malloc(n*sizeof(int));
     for(int i=1; i<=mult; i++)
     {
         if(i%1000==0)
         {
-            int *arr = randomarray(n, max), *sorted = (int*)malloc(sizeof(int)), c=0;
+            arr = randomarray(n, max);
+            int c=0;
             mediansort(n, &c, arr, sorted);  
             int item = chopsearch(s, n, sorted, 0, n-1);
         }
@@ -143,7 +149,7 @@ int main()
     scanf("%i", &n);
     printf("Enter maximum value: ");
     scanf("%i", &max);
-    int *arr = randomarray(n, max), *sorted = (int*)malloc(sizeof(int));
+    int *arr = randomarray(n, max), *sorted = (int*)malloc(n*sizeof(int));
     printf("\nUnsorted array: \n");
     for(int i=0; i<n; i++)
         printf("%i,\n", arr[i]);
@@ -154,11 +160,11 @@ int main()
     printf("End\n");
 
     //question 6 - i
-    printf("1.a: %d\n",benchmark_naive(2000, 10000, 10, 1000000));
-    printf("1.b: %d\n",benchmark_chop(2000, 10000, 10, 1000000));
-    printf("2.a: %d\n",benchmark_naive(2000, 10000, 5000, 1000000));
-    printf("2.b: %d\n",benchmark_chop(2000, 10000, 5000, 1000000));
-    printf("3.a: %d\n",benchmark_naive(2000, 10000, 9000, 1000000));
-    printf("3.b: %d\n",benchmark_chop(2000, 10000, 9000, 1000000));
+    printf("1.a: %d\n",benchmark_naive(2000, 10000, 10, 10000));
+    printf("1.b: %d\n",benchmark_chop(2000, 10000, 10, 10000));
+    printf("2.a: %d\n",benchmark_naive(2000, 10000, 5000, 10000));
+    printf("2.b: %d\n",benchmark_chop(2000, 10000, 5000, 10000));
+    printf("3.a: %d\n",benchmark_naive(2000, 10000, 9000, 10000));
+    printf("3.b: %d\n",benchmark_chop(2000, 10000, 9000, 10000));
     return 0;
 }
