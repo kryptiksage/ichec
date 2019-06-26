@@ -12,7 +12,6 @@ int main(int argc, char **argv){
     count=0;
     #pragma omp critical
     for(i=1;i<=niter;i++){
-        #pragma ordered
         seed=i;
         x=ran2(&seed);  
         y=ran2(&seed);
