@@ -10,7 +10,7 @@ int main(int argc, char **argv){
     extern float ran2();
     niter=10000;
     count=0;
-    #pragma opm parallel for ordered
+    #pragma omp critical
     for(i=1;i<=niter;i++){
         #pragma ordered
         seed=i;
